@@ -1,0 +1,30 @@
+{
+    "files.associations": {
+        "ru_ghost.c": "cpp",
+        "bluepacman.c": "cpp",
+        "r_o_pacman.c": "cpp",
+        "u_o_pacman.c": "cpp",
+        "d_m_pacman.c": "cpp",
+        "d_o_pacman.c": "cpp",
+        "fruit.c": "cpp",
+        "l_m_pacman.c": "cpp",
+        "l_o_pacman.c": "cpp",
+        "ms_c_pacman_d.c": "cpp",
+        "ms_c_pacman_l.c": "cpp",
+        "ms_c_pacman_r.c": "cpp",
+        "ms_c_pacman_u.c": "cpp",
+        "ms_d_m_pacman.c": "cpp",
+        "ms_d_o_pacman.c": "cpp",
+        "ms_l_m_pacman.c": "cpp",
+        "ms_l_o_pacman.c": "cpp",
+        "ms_r_m_pacman.c": "cpp",
+        "ms_u_m_pacman.c": "cpp",
+        "ms_r_o_pacman.c": "cpp",
+        "ms_u_o_pacman.c": "cpp",
+        "rd_ghost.c": "cpp",
+        "rl_ghost.c": "cpp",
+        "r_m_pacman.c": "cpp",
+        "rr_ghost.c": "cpp",
+        "u_m_pacman.c": "cpp"
+    }
+}
