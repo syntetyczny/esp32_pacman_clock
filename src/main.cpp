@@ -32,19 +32,17 @@
 #define TFT_GREY 0xC618
 
 /* Xm i Yp to jest output
-Xm 16
-Yp 4
-(LCD_D1 - 4  ,LCD_CS - 27) = 580ohm
+(LCD_D1 - 5  ,LCD_CS - 32) = 580ohm
 (LCD_D0 - 16 ,LCD_RS - 14) = 322ohm
 
                         ___ESP32 - Node32s___
-LCD_D1          4      |                     |     13     LCD_RD
+LCD_D1          5      |                     |     13     LCD_RD
 LCD_D0          16     |                     |     12     LCD_WR
 LCD_D7          17     |                     |     14     LCD_RS
-LCD_D6          18     |                     |     27     LCD_CS
+LCD_D6          18     |                     |     32     LCD_CS
 LCD_D5          19     |                     |     26     LCD_RST
-LCD_D4          21     |                     |
-LCD_D3          22     |                     |
+LCD_D4          21     |                     |     25     AUDIO_OUT
+LCD_D3          22     |                     |     33     MUTE_PIN
 LCD_D2          23     |                     |
                        |_____________________|
 */
@@ -53,6 +51,8 @@ LCD_D2          23     |                     |
 #define XM 14 //33  // 14 must be an analog pin, use "An" notation!         LCD_D0
 #define YM 16   // can be a digital pin                                     LCD_D1
 #define XP 5   // 4can be a digital pin   
+#define MUTE_PIN 33 //mute pin
+#define AUDIO_OUT 25 //pin where connected is PAM8403
 
 #define MAXPRESSURE 899
 
@@ -221,7 +221,7 @@ XT_Wav_Class Pacman(PM);     // create an object of type XT_Wav_Class that is us
                                       // the dac audio class (below), passing wav data as parameter.
 XT_Wav_Class pacmangobble(gobble);     // create an object of type XT_Wav_Class that is used by 
                                                                           
-XT_DAC_Audio_Class DacAudio(25,0);    // Create the main player class object. 
+XT_DAC_Audio_Class DacAudio(AUDIO_OUT,0);    // Create the main player class object. 
                                       // Use GPIO 25, one of the 2 DAC pins and timer 0
 
 
@@ -329,10 +329,10 @@ randomSeed(analogRead(0));
 //Initialize 
   Serial.begin(115200);
 
-pinMode(32, OUTPUT); // This pin used to mute the audio when not in use via pin 5 of PAM8403
+pinMode(MUTE_PIN, OUTPUT); // This pin used to mute the audio when not in use via pin 5 of PAM8403
 
   // MUTE sound to speaker via pin 5 of PAM8403
-digitalWrite(32,LOW);
+digitalWrite(MUTE_PIN,HIGH);
 
 /*
   //connect to WiFi
@@ -5609,10 +5609,10 @@ void setupacmancharacter() { // Menu used to choose Pacman or Ms Pacman
 void playalarmsound1(){
 
   // UNMUTE sound to speaker via pin 5 of PAM8403 using ESP32 pin 32
-  digitalWrite(32,HIGH);
+  digitalWrite(MUTE_PIN,LOW);
 
  
-  for (int startsound = 1; startsound < 8500000; startsound++) {
+  for (int startsound = 1; startsound < 9000000; startsound++) {
       
   DacAudio.FillBuffer();                // Fill the sound buffer with data
   if(Pacman.Playing==false)       // if not playing,
@@ -5620,14 +5620,14 @@ void playalarmsound1(){
   }
 
   // MUTE sound to speaker via pin 5 of PAM8403 using ESP32 pin 32
-  digitalWrite(32,LOW);
+  digitalWrite(MUTE_PIN,HIGH);
 
 }
 
 void playalarmsound2(){
 
   // UNMUTE sound to speaker via pin 5 of PAM8403 using ESP32 pin 32
-  digitalWrite(32,HIGH);
+  digitalWrite(MUTE_PIN,LOW);
 
  
   for (int startsound = 1; startsound < 1500000; startsound++) {
@@ -5636,9 +5636,9 @@ void playalarmsound2(){
   if(pacmangobble.Playing==false)       // if not playing,
       DacAudio.Play(&pacmangobble);
   }
-
+  dacWrite(AUDIO_OUT, LOW);
   // MUTE sound to speaker via pin 5 of PAM8403 using ESP32 pin 32
-  digitalWrite(32,LOW);
+  digitalWrite(MUTE_PIN,HIGH);
 
 }
 
