@@ -58,6 +58,8 @@ LCD_D2          23     |                     |
 
 #define EEPROM_SIZE 54 // 54 EEPROM bytes required to store 27 Integer values
 
+#define HOURFORMAT12 0
+
 struct timezonedata {
   
   char* timezonelocation;  // Region, Country, City
@@ -4174,28 +4176,34 @@ e = 8;
 
 
 // Calculate hour digit values for time
-
-if ((h >= 10) && (h <= 12)) {     // AM hours 10,11,12
-  d1 = 1; // calculate Tens hour digit
-  d2 = h - 10;  // calculate Ones hour digit 0,1,2
-  } else  
-  if ( (h >= 22) && (h <= 24)) {    // PM hours 10,11,12
-  d1 = 1; // calculate Tens hour digit
-  d2 = h - 22;  // calculate Ones hour digit 0,1,2    
-  } else 
-  if ((h <= 9)&&(h >= 1)) {     // AM hours below ten
-  d1 = 0; // calculate Tens hour digit
-  d2 = h;  // calculate Ones hour digit 0,1,2    
-  } else
-  if ( (h >= 13) && (h <= 21)) { // PM hours below 10
-  d1 = 0; // calculate Tens hour digit
-  d2 = h - 12;  // calculate Ones hour digit 0,1,2 
-  } else { 
-    // If hour is 0
-  d1 = 1; // calculate Tens hour digit
-  d2 = 2;  // calculate Ones hour digit 0,1,2   
-  }
-    
+// WIP - add switch to choose between 12h and 24h clock format
+// displayed format is d1 d2 d3 d4
+if(HOURFORMAT12){
+  if ((h >= 10) && (h <= 12)) {     // AM hours 10,11,12
+    d1 = 1; // calculate Tens hour digit
+    d2 = h - 10;  // calculate Ones hour digit 0,1,2
+    } else  
+    if ( (h >= 22) && (h <= 24)) {    // PM hours 10,11,12
+    d1 = 1; // calculate Tens hour digit
+    d2 = h - 22;  // calculate Ones hour digit 0,1,2    
+    } else 
+    if ((h <= 9)&&(h >= 1)) {     // AM hours below ten
+    d1 = 0; // calculate Tens hour digit
+    d2 = h;  // calculate Ones hour digit 0,1,2    
+    } else
+    if ( (h >= 13) && (h <= 21)) { // PM hours below 10
+    d1 = 0; // calculate Tens hour digit
+    d2 = h - 12;  // calculate Ones hour digit 0,1,2 
+    } else { 
+      // If hour is 0
+    d1 = 1; // calculate Tens hour digit
+    d2 = 2;  // calculate Ones hour digit 0,1,2   
+    }
+}else
+{
+  d1 = h/10;
+  d2 = h%10;
+}   
     
 // Calculate minute digit values for time
 
